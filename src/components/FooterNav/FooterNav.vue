@@ -44,16 +44,19 @@
     width 100%
     height 100px
     box-sizing border-box
-    padding 12px 0
+    padding 12px
+    background-color #fff
     top-border-1px(#666)
     position fixed
     left 0
     bottom 0
+    align-items center
+    z-index 100
     li
       flex 1
-      text-align center
       display flex
       flex-direction column
+      align-items center
       .text
         font-size 24px
         color #666

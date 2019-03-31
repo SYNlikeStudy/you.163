@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <router-view />
     <FooterNav />
   </div>
@@ -9,6 +9,9 @@
   export default {
     components: {
       FooterNav
+    },
+    mounted () {
+      this.$store.dispatch('getHomeData')
     }
   }
 </script>

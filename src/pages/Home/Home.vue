@@ -46,7 +46,7 @@
       <section class="wrap" v-show="isShow" @click="handleArrow"></section>
     </div>
     <!--轮播-->
-    <div class="swiper-container">
+    <div class="firstSwiper swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <img src="https://yanxuan.nosdn.127.net/f00ff1a6f9e244efe43c77ee8331318f.jpg?imageView&quality=75&thumbnail=750x0" alt="">
@@ -82,17 +82,93 @@
       <div class="center">30天无忧退货</div>
       <div>48小时快速退款</div>
     </section>
+    <!--带图片的分类列表-->
+    <section class="categoryList">
+      <ul>
+        <li v-for="(item,index) in homeData.kingKongModule.kingKongList" :key="index">
+          <img :src="item.picUrl" alt="">
+          <span>{{item.text}}</span>
+        </li>
+      </ul>
+    </section>
+    <img src="https://yanxuan.nosdn.127.net/df012027a9bd3c0b0e5779c11b814180.png" alt="">
+    <!--四个图-->
+    <section class="hasFourList">
+      <ul>
+        <li v-for="(item,index) in homeData.sceneLightShoppingGuideModule" :key="index">
+          <p class="big">{{item.styleItem.title}}</p>
+          <p class="small">{{item.styleItem.desc}}</p>
+          <div>
+            <img v-for="(pic,index) in item.styleItem.picUrlList" :src="pic" alt="" :key="index">
+          </div>
+        </li>
+      </ul>
+    </section>
+    <!--私人定制轮播-->
+    <section class="personalTailor">
+      <h3>私人定制</h3>
+      <div class="swiper-container">
+        <ul class="swiper-wrapper">
+          <li class="swiper-slide" v-for="(item,index) in personalTailorList" :key="index">
+            <div v-for="(goods,index) in item" :key="index">
+              <img :src="goods.primaryPicUrl" alt="">
+              <span>{{goods.name}}<i>¥{{goods.counterPrice}}</i></span>
+            </div>
+          </li>
+        </ul>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+    <!--限时购-->
+    <section class="sixListWrap">
+      <split />
+      <h3>
+        <span class="left">限时购</span>
+        <span class="right">更多 ></span>
+      </h3>
+      <sixList :sixListData="homeData.flashSaleModule.itemList"/>
+    </section>
+    <!--新品首发-->
+    <section class="sixListWrap">
+      <split />
+      <h3>
+        <span class="left">新品首发</span>
+        <span class="right">更多 ></span>
+      </h3>
+      <sixList :sixListData="homeData.flashSaleModule.itemList"/>
+    </section>
   </div>
 </template>
 <script>
+  import {mapState} from 'vuex'
   import BScroll from 'better-scroll'
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.css'
+
+  import Split from '../../components/Split/Split.vue'
+  import sixList from '../../components/sixList/sixList.vue'
+
   export default {
     data () {
       return {
         isShow: false,
         isArrow: true,// true箭头向下
+      }
+    },
+    computed: {
+      ...mapState({
+        homeData: state => state.home.homeData
+      }),
+      // 私人定制数组
+      personalTailorList () {
+        let result = []
+        for (let i = 0; i<4; i++) {
+          let start = i * 3
+          let end = start + 3
+          result.push(this.homeData.personalShop.slice(start,end))
+        }
+        return result
       }
     },
     methods: {
@@ -118,6 +194,10 @@
           el: '.swiper-pagination',
         },
       })
+    },
+    components: {
+      Split,
+      sixList
     }
   }
 
@@ -144,6 +224,7 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixins.styl"
   #home
+    padding-bottom 105px
     .homeHeader
       height 88px
       line-height 72px
@@ -151,8 +232,10 @@
       vertical-align middle
       display flex
       align-items center
-      position relative
-      z-index 15
+      position fixed
+      top 0
+      left 0
+      z-index 30
       background-color #fff
       img
         height 40px
@@ -184,6 +267,7 @@
     .homeNav
       overflow hidden
       position relative
+      margin-top 88px
       .homeNavUl
         width 1450px
         font-size 28px
@@ -230,9 +314,10 @@
         width 100%
         height 60px
         line-height 60px
-        font 28px
+        font-size  28px
         padding-left 30px
       .allUl
+        padding 24px 0 0 0
         li
           width 150px
           height 56px
@@ -257,7 +342,7 @@
       margin auto
       background-color rgba(0,0,0,.5)
     // 轮播
-    .swiper-container
+    .firstSwiper
       width 100%
       height 370px
       img
@@ -274,4 +359,90 @@
         text-align center
       .center
         margin 0 40px
+    .categoryList
+      margin-bottom 40px
+      ul
+        width 100%
+        height 332px
+        li
+          width 150px
+          float left
+          display flex
+          flex-direction column
+          text-align center
+          padding 15px 20px 0 20px
+          box-sizing border-box
+          img
+            height 110px
+            width 110px
+            display block
+    //四个图
+    .hasFourList
+      margin-top 40px
+      ul
+        display flex
+        flex-wrap wrap
+        justify-content center
+        li
+          width 343px
+          height 260px
+          padding 20px 0 0 20px
+          margin 4px 0 0 4px
+          background-color #f5f5f5
+        .big
+          font-size 32px
+          color #333
+          padding-left 10px
+        .small
+          font-size 24px
+          color #7f7f7f
+          margin 10px 0
+          padding-left 10px
+        div
+          img
+            float left
+            width 150px
+            height 150px
+    .personalTailor
+      overflow hidden
+      margin-bottom 30px
+      h3
+        height 100px
+        line-height 100px
+        font-size 32px
+        padding-left 30px
+      .swiper-container
+        height 380px
+        ul
+          width 3000px
+          height 311px
+          display flex
+        li
+          width 750px
+          display flex
+          div
+            display flex
+            flex-direction column
+            margin-left 20px
+            span
+              width 210px
+              i
+                color $main
+            img
+              background-color #f5f5f5
+              height 216px
+              width 216px
+              margin-bottom 12px
+    .sixListWrap
+      h3
+        height 100px
+        line-height 100px
+        margin-top 20px
+        .left
+          font-size 32px
+          margin-left 50px
+        .right
+          font-size 28px
+          float right
+          margin-right 50px
 </style>
