@@ -4,27 +4,52 @@ const Category = () => import('../pages/Category/Category.vue')
 const Things = () => import('../pages/Things/Things.vue')
 const ShopCart = () => import('../pages/ShopCart/ShopCart.vue')
 const Profile = () => import('../pages/Profile/Profile.vue')
+const Search = () => import('../pages/Search/Search.vue')
+const Login = () => import('../pages/Login/Login.vue')
 
 export default [
   {
     path: '/home',
-    component: Home
+    component: Home,
+    meta: {
+      isShow: true
+    }
   },
   {
     path: '/category',
-    component: Category
+    component: Category,
+    meta: {
+      isShow: true
+    }
+  },
+  {
+    path: '/search',
+    component: Search
   },
   {
     path: '/things',
-    component: Things
+    component: Things,
+    meta: {
+      isShow: true
+    }
   },
   {
     path: '/shopcart',
-    component: ShopCart
+    component: ShopCart,
+    meta: {
+      isShow: true
+    }
   },
   {
     path: '/profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      isShow: true
+    }
+  },
+  {
+    path: '/login',
+    component: Login
   },
   {
     path: '/',

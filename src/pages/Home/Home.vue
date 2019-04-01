@@ -4,7 +4,7 @@
     <section class="homeHeader">
       <img src="http://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/indexLogo-a90bdaae6b.png" alt="">
       <span class="icon-search"></span>
-      <span class="input">搜索商品,共~~~~~款好物</span>
+      <span class="input" @click="toSearch">搜索商品,共~~~~~款好物</span>
       <button>登录</button>
     </section>
     <!--home的头部导航-->
@@ -130,13 +130,21 @@
       <sixList :sixListData="homeData.flashSaleModule.itemList"/>
     </section>
     <!--新品首发-->
-    <section class="sixListWrap">
+    <section class="sixListWrap newSixListWrap">
       <split />
       <h3>
         <span class="left">新品首发</span>
         <span class="right">更多 ></span>
       </h3>
-      <sixList :sixListData="homeData.flashSaleModule.itemList"/>
+      <ul>
+        <li v-for="(newItem) in homeData.newItemList" :key="newItem.id">
+          <img :src="newItem.primaryPicUrl" alt="">
+          <div>
+            <span class="title">{{newItem.name}}</span>
+            <span class="price">¥{{newItem.counterPrice}}</span>
+          </div>
+        </li>
+      </ul>
     </section>
   </div>
 </template>
@@ -175,13 +183,16 @@
       handleArrow () {
         this.isShow = !this.isShow
         this.isArrow = !this.isArrow
+      },
+      toSearch () {
+        this.$router.push('/search')
       }
     },
     mounted () {
       // 横向滑动的ul
-      new BScroll('.homeNav', {
+      this.navScroll = new BScroll('.homeNav', {
         scrollX: true,
-        click: true,
+        click: true
       })
       //轮播
       var mySwiper = new Swiper ('.swiper-container', {
@@ -195,13 +206,23 @@
         },
       })
     },
+    updated () {
+      if (this.navScroll) {
+        this.navScroll.refresh()
+      }else {
+        this.navScroll = new BScroll('.homeNav', {
+          scrollX: true,
+          click: true
+        })
+      }
+    },
     components: {
       Split,
       sixList
     }
   }
 
-  window.addEventListener('DOMContentLoaded',function () {
+  document.addEventListener('DOMContentLoaded',function () {
   })
   window.onload = function () {
     const navUl = document.getElementsByClassName('homeNavUl')
@@ -293,13 +314,13 @@
         position absolute
         top 0
         right 0
-        transition all 1
+        transition all 1s
         &.downArrow
           transform rotate(0deg)
-          transition all 0.5
+          transition all 0.5s
         &.upArrow
           transform rotate(180deg)
-          transition all 0.5
+          transition all 0.5s
     .all
       background-color #fff
       height 372px
@@ -445,4 +466,24 @@
           font-size 28px
           float right
           margin-right 50px
+    .newSixListWrap
+      padding-bottom 10px
+      ul
+        display flex
+        flex-wrap wrap
+        padding-left 25px
+        li
+          width 216px
+          height 318px
+          margin-right 25px
+          div
+            .title
+              color #7f7f7f
+              line-height 36px
+            .price
+              color $main
+          img
+            background-color #f5f5f5
+            width 216px
+            height 216px
 </style>

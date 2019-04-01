@@ -20,7 +20,7 @@
             :class="this.$route.path === '/shopCart' ? 'icon-shopCart-active': 'icon-shopCart'"></span>
       <span :class="this.$route.path === '/shopCart' ? 'text-active': 'text'">购物车</span>
     </li>
-    <li @click="goto('profile')">
+    <li @click="goto('login')">
       <span class="u-icon"
             :class="this.$route.path === '/profile' ? 'icon-profile-active': 'icon-profile'"></span>
       <span :class="this.$route.path === '/profile' ? 'text-active': 'text'">个人</span>
