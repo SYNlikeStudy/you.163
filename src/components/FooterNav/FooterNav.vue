@@ -17,8 +17,8 @@
     </li>
     <li @click="goto('shopCart')">
       <span class="u-icon"
-            :class="this.$route.path === '/shopCart' ? 'icon-shopCart-active': 'icon-shopCart'"></span>
-      <span :class="this.$route.path === '/shopCart' ? 'text-active': 'text'">购物车</span>
+            :class="this.$route.path === '/shopcart' ? 'icon-shopCart-active': 'icon-shopCart'"></span>
+      <span :class="this.$route.path === '/shopcart' ? 'text-active': 'text'">购物车</span>
     </li>
     <li @click="goto('login')">
       <span class="u-icon"
