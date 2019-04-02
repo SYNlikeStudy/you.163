@@ -10,7 +10,7 @@
       <section class="nav" v-if="categoryData.categoryL1List">
         <ul>
           <li v-for="(category,index) in categoryData.categoryL1List" :key="category.id"
-              @click="getIndex(index)">{{category.name}}</li>
+              @click="getIndex(index)" :class="thisIndex===index?'active':''">{{category.name}}</li>
         </ul>
       </section>
       <!--右侧-->
@@ -114,11 +114,14 @@
             font-size 28px
             &:first-child
               margin-top 0
+          .active
+            border-left 6px solid #b4282d
+            color #b4282d
       //右侧内容
       .container
         width 588px
         height 1140px
-        padding 15px 30px 100px 30px
+        padding 0px 30px 100px 30px
         img
           width 528px
           height 192px

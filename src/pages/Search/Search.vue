@@ -1,15 +1,30 @@
 <template>
-  <div id="searchWrap">
+  <div id="searchWrap" v-if="searchInitialData.defaultKeyword">
     <section class="searchHeader">
       <span class="input">
-        <span class="icon-search"></span>搜索商品,共~~~~~款好物
+        <span class="icon-search"></span>{{searchInitialData.defaultKeyword.keyword}}
       </span>
       <span class="cancel" @click="returnLast">取消</span>
+    </section>
+    <div class="hot">热门搜索</div>
+    <section class="list">
+      <ul>
+        <li v-for="(hotKeyword) in searchInitialData.hotKeywordVOList" :key="hotKeyword.extra.materialId">{{hotKeyword.keyword}}</li>
+      </ul>
     </section>
   </div>
 </template>
 <script>
+  import {mapState} from 'vuex'
   export default {
+    mounted () {
+      this.$store.dispatch('getSearchInitialData')
+    },
+    computed: {
+      ...mapState({
+        searchInitialData: state => state.search.searchInitialData
+      })
+    },
     methods: {
       returnLast () {
         this.$router.back()
@@ -43,4 +58,19 @@
       .cancel
         line-height 56px
         font-size 28px
+    .hot
+      font-size 28px
+      padding 30px 0 0 30px
+      color #999
+    .list
+      ul
+        color #333
+        font-size 28px
+        display flex
+        flex-wrap wrap
+        margin 30px 0 0 30px
+        li
+          padding 8px 15px 8px 15px
+          margin 0 60px 32px 0
+          border 1px solid #999
 </style>
