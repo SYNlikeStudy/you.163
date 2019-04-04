@@ -5,16 +5,17 @@
         <img src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png" alt="">
       </div>
       <label class="input_phone">
-        <input type="text" placeholder="邮箱账号"/>
+        <input type="text" placeholder="邮箱账号" v-model="mail" @blur="testMail"/>
       </label>
       <label class="input_code">
-        <input type="text" placeholder="密码"/>
+        <input type="text" placeholder="密码" v-model="pwd"/>
       </label>
       <div class="login_help">
+        <div class="err" v-show="err">{{err}}</div>
         <span>注册账号</span>
         <span class="right">忘记密码</span>
       </div>
-      <div class="phone_login active">
+      <div class="phone_login active" @click="login">
         <span>登录</span>
       </div>
       <div class="email_login" @click="changeIsLoginMail">
@@ -24,7 +25,38 @@
   </div>
 </template>
 <script>
+  import {reqLoginEmail} from '../../../api'
   export default {
+    methods: {
+      // 邮箱前台验证
+      testMail () {
+        if (!/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/.test(this.mail)&&this.mail) {
+          this.err = '邮箱格式错误'
+        } else {
+          this.err = ''
+        }
+      },
+      async login () {
+        if (!/^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/.test(this.mail)&&this.mail) {
+          this.err = '邮箱格式错误'
+        } else {
+          const {mail,pwd} = this
+          const result = await reqLoginEmail(mail,pwd)
+          if (result.code === 0) {
+            this.$router.replace('/profile')
+          } else {
+            alert('用户名或密码错误')
+          }
+        }
+      }
+    },
+    data () {
+      return {
+        mail: '',
+        pwd: '',
+        err: ''
+      }
+    },
     props: {
       changeIsLoginMail: Function
     }
@@ -82,6 +114,10 @@
         font-size 27px
         line-height 45px
     .login_help
+      .err
+        color #b4282d
+        font-size 24px
+        margin-bottom 30px
       span
         color #bdbdbd
       .right

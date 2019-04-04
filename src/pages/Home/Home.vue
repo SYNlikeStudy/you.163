@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="home" v-if="homeData.kingKongModule">
     <!--home的头-->
     <section class="homeHeader">
       <img src="http://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/indexLogo-a90bdaae6b.png" alt="">
@@ -12,34 +12,21 @@
       <!--home的头部导航原版-->
       <section class="homeNav">
         <ul class="homeNavUl">
-          <li class="navItem active">推荐</li>
-          <li class="navItem">居家生活</li>
-          <li class="navItem">服饰鞋包</li>
-          <li class="navItem">美食酒水</li>
-          <li class="navItem">个护清洁</li>
-          <li class="navItem">母婴亲子</li>
-          <li class="navItem">运动旅行</li>
-          <li class="navItem">数码家电</li>
-          <li class="navItem">礼品特色</li>
+          <li class="navItem" v-for="(item,index) in navListData" :key="index" @click="newIndex=index"
+              :class="index===newIndex?'navItem active':'navItem'">{{item}}</li>
         </ul>
-        <div></div>
-        <div class="arrow" @click="handleArrow" :class="isArrow ? 'downArrow' : 'upArrow'">
-          <img src="http://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/arrow-down-3-799ded53ea.png" alt="">
+        <div class="opcityBox"></div>
+        <div class="arrow" @click="handleArrow">
+          <img src="http://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/arrow-down-3-799ded53ea.png"
+               :class="isArrow ? 'downArrow' : 'upArrow'" alt="">
         </div>
       </section>
       <!--home头部导航的展开-->
       <section class="all" v-show="isShow">
         <div class="allTitle">全部频道</div>
         <ul class="allUl">
-          <li class="allItem active">推荐</li>
-          <li class="allItem">居家生活</li>
-          <li class="allItem">服饰鞋包</li>
-          <li class="allItem">美食酒水</li>
-          <li class="allItem">个护清洁</li>
-          <li class="allItem">母婴亲子</li>
-          <li class="allItem">运动旅行</li>
-          <li class="allItem">数码家电</li>
-          <li class="allItem">礼品特色</li>
+          <li class="allItem" v-for="(item,index) in navListData" :key="index" @click="newIndex=index"
+              :class="index===newIndex?'allItem active':'allItem'">{{item}}</li>
         </ul>
       </section>
       <!--home头部导航展开时的遮罩层-->
@@ -162,6 +149,8 @@
       return {
         isShow: false,
         isArrow: true,// true箭头向下
+        newIndex: 0,
+        navListData: ['推荐','居家生活','服饰鞋包','美食酒水','个护清洁','母婴亲子','运动旅行','数码家电','全球特色']// 导航的数据
       }
     },
     computed: {
@@ -186,7 +175,7 @@
       },
       toSearch () {
         this.$router.push('/search')
-      }
+      },
     },
     mounted () {
       // 横向滑动的ul
@@ -304,6 +293,14 @@
           &.active
             border-bottom 6px solid $main
             color $main
+      .opcityBox
+        width 60px
+        height 60px
+        z-index 15
+        position absolute
+        top 0
+        right 100px
+        background linear-gradient(90deg,rgba(255,255,255,0) 0,#fff 100%)
       .arrow
         width 100px
         height 60px
@@ -315,10 +312,10 @@
         top 0
         right 0
         transition all 1s
-        &.downArrow
+        .downArrow
           transform rotate(0deg)
           transition all 0.5s
-        &.upArrow
+        .upArrow
           transform rotate(180deg)
           transition all 0.5s
     .all

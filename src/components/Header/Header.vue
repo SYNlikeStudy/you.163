@@ -28,6 +28,7 @@
     left 0
     top 0
     z-index 10
+    padding 0 24px
     div
       flex 1
       .icon-sousuo
@@ -37,6 +38,5 @@
         font-size 46px
     .icon-shouye
       flex 1
-      margin-left 32px
       font-size 51px
 </style>

@@ -17,6 +17,13 @@ module.exports = {
         pathRewrite: {// 重写路径: 去掉路径中开头的'/api'
           '^/api': ''
         }
+      },
+      '/local': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        pathRewrite: {// 重写路径: 去掉路径中开头的'/api'
+          '^/local': ''
+        }
       }
     },
 

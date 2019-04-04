@@ -5,18 +5,20 @@
         <img src="//yanxuan.nosdn.127.net/bd139d2c42205f749cd4ab78fa3d6c60.png" alt="">
       </div>
       <label class="input_phone">
-        <input type="text" placeholder="请输入手机号"/>
+        <input type="text" placeholder="请输入手机号" v-model="phone" @blur="testPhoneAndCode"/>
+        <div class="clear" @click="handelClear" v-if="phone">x</div>
       </label>
       <label class="input_code">
-        <input type="text" placeholder="请输入手机验证码"/>
-        <div class="get_phone_code">获取验证码</div>
+        <input type="text" placeholder="请输入手机验证码" v-model="code" @blur="testPhoneAndCode"/>
+        <div class="get_phone_code" @click="getCode">获取验证码</div>
       </label>
       <div class="login_help">
+        <span class="err" v-show="errPhone || errCode">{{errPhone+'&nbsp;&nbsp;'+errCode}}</span>
         <span class="left">遇到问题? </span>
         <span class="right">使用密码验证登录</span>
       </div>
       <div class="phone_login active">
-        <span>登录</span>
+        <span @click="login">登录</span>
       </div>
       <div class="email_login" @click="changeIsLoginPhone">
         <span>其他登录方式</span>
@@ -26,7 +28,51 @@
   </div>
 </template>
 <script>
+  import {reqCode,reqLoginPhone} from '../../../api'
+
   export default {
+    data () {
+      return {
+        phone: '',
+        code: '',
+        errPhone: '',
+        errCode: ''
+      }
+    },
+    methods: {
+      // 前台验证手机号
+      testPhoneAndCode () {
+        if (!/^1[34578]\d{9}$/.test(this.phone.trim()) && this.phone) {
+          this.errPhone = '手机号格式错误'
+        } else {
+          this.errPhone = ''
+        }
+        if (!/^\d{6}$/.test(this.code.trim()) && this.code) {
+          this.errCode = '验证码格式错误'
+        }else {
+          this.errCode = ''
+        }
+      },
+      //点击叉
+      handelClear () {
+        this.phone = ''
+        this.testPhone()
+      },
+      //点击获取验证码
+      getCode () {
+        reqCode(this.phone)
+      },
+      // 登陆
+      async login () {
+        const {phone,code} = this
+        const result = await reqLoginPhone (phone,code)
+        if (result.code === 0) {
+          this.$router.replace('/profile')
+        } else {
+          alert('手机号或验证码错误')
+        }
+      }
+    },
     props: {
       changeIsLoginPhone: Function
     }
@@ -63,6 +109,17 @@
         margin-top 30px
         input
           font-size 27px
+        .clear
+          width 30px
+          height 30px
+          line-height 30px
+          background-color #ccc
+          position absolute
+          right 10px
+          top 30px
+          border-radius 50%
+          text-align center
+          color #fff
     .input_phone,
     .input_code
       display block
@@ -97,6 +154,10 @@
         font-size 27px
       .right
         float right
+      .err
+        color #b4282d
+        display block
+        margin-bottom 30px
     .phone_login,.email_login
       width 679px
       height 98px

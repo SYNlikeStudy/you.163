@@ -6,6 +6,8 @@ const ShopCart = () => import('../pages/ShopCart/ShopCart.vue')
 const Profile = () => import('../pages/Profile/Profile.vue')
 const Search = () => import('../pages/Search/Search.vue')
 const Login = () => import('../pages/Login/Login.vue')
+const Find = () => import('../pages/Things/Find/Find.vue')
+const Choose = () => import('../pages/Things/Choose/Choose.vue')
 
 export default [
   {
@@ -31,7 +33,24 @@ export default [
     component: Things,
     meta: {
       isShow: true
-    }
+    },
+    redirect: '/things/find',
+    children: [
+      {
+        path: '/things/find',
+        component: Find,
+        meta: {
+          isShow: true
+        }
+      },
+      {
+        path: '/things/choose',
+        component: Choose,
+        meta: {
+          isShow: true
+        }
+      }
+    ]
   },
   {
     path: '/shopcart',

@@ -12,6 +12,7 @@
     },
     mounted () {
       this.$store.dispatch('getHomeData')
+      this.$store.dispatch('getUserInfo')
     }
   }
 </script>

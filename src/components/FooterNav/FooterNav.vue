@@ -12,15 +12,15 @@
     </li>
     <li @click="goto('things')">
       <span class="u-icon"
-            :class="this.$route.path === '/things' ? 'icon-things-active': 'icon-things'"></span>
-      <span :class="this.$route.path === '/things' ? 'text-active': 'text'">识物</span>
+            :class="this.$route.path.indexOf('/things')!=-1? 'icon-things-active': 'icon-things'"></span>
+      <span :class="this.$route.path.indexOf('/things')!=-1? 'text-active': 'text'">识物</span>
     </li>
     <li @click="goto('shopCart')">
       <span class="u-icon"
             :class="this.$route.path === '/shopcart' ? 'icon-shopCart-active': 'icon-shopCart'"></span>
       <span :class="this.$route.path === '/shopcart' ? 'text-active': 'text'">购物车</span>
     </li>
-    <li @click="goto('login')">
+    <li @click="goto(userInfo ? 'profile' : 'login')">
       <span class="u-icon"
             :class="this.$route.path === '/profile' ? 'icon-profile-active': 'icon-profile'"></span>
       <span :class="this.$route.path === '/profile' ? 'text-active': 'text'">个人</span>
@@ -28,7 +28,13 @@
   </ul>
 </template>
 <script>
+  import {mapState} from 'vuex'
   export default {
+    computed: {
+      ...mapState({
+        userInfo: state => state.login.userInfo
+      })
+    },
     methods: {
       // 路由跳转的方法
       goto (path) {

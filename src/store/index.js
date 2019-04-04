@@ -5,6 +5,7 @@ import home from './modules/home'
 import category from './modules/category'
 import search from './modules/search'
 import things from './modules/things'
+import login from './modules/login'
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     home,
     category,
     search,
-    things
+    things,
+    login
   }
 })
